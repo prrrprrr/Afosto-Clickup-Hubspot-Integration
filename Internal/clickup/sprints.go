@@ -1,5 +1,8 @@
 package clickup
 
+/*
+This file contains client functions regarding sprints
+*/
 import (
 	"context"
 	"encoding/json"

@@ -1,5 +1,8 @@
 package clickup
 
+/*
+This file contains the client methods that relate to file processing
+*/
 import (
 	"bytes"
 	"context"

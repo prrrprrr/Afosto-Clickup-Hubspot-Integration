@@ -1,5 +1,8 @@
 package clickup
 
+/*
+This file contains the structs and client methods that relate to clickup tasks
+*/
 import (
 	"context"
 	"encoding/json"

@@ -1,5 +1,8 @@
 package clickup
 
+/*
+This file contains all client methods regarding custom fields in clickup.
+*/
 import (
 	"context"
 	"encoding/json"
