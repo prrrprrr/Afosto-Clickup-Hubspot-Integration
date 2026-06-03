@@ -88,7 +88,7 @@ func (s clickUpClient) GetComments(ctx context.Context, taskId string) (*getComm
 }
 
 /*
-parseClickUpComment uses the blocksToHTML helper function to parse clickup responses into usable richtext for outbound emails.
+parseClickUpComment uses the blocksToHTML helper function to parse clickup responses into usable HTML for outbound emails.
 */
 func (s clickUpClient) parseClickUpComment(ctx context.Context, response *Comment) (string, error) {
 	//TODO error handling in this function and BlocksToHTML
