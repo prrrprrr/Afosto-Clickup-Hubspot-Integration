@@ -18,7 +18,7 @@ Integrates ClickUp tasks with HubSpot using a Go backend and a HubSpot UI extens
 1. **Clone the repo**
    ```bash
    git clone https://github.com/prrrprrr/Afosto-Clickup-Hubspot-Integration
-   cd your-repo
+   cd Afosto-Clickup-Hubspot-Integration
    ```
 
 2. **Configure environment variables**
