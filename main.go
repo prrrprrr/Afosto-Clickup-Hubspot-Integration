@@ -1,20 +1,112 @@
 package main
 
 import (
-	"fmt"
+	"Afosto-Clickup-Hubspot-Integration/internal/clickup"
+	"Afosto-Clickup-Hubspot-Integration/internal/hubspot"
+	"Afosto-Clickup-Hubspot-Integration/attachments"
+	"Afosto-Clickup-Hubspot-Integration/comments"
+	"Afosto-Clickup-Hubspot-Integration/handlers"
+	"Afosto-Clickup-Hubspot-Integration/tasks"
+	"Afosto-Clickup-Hubspot-Integration/tickets"
+	"log"
+	"net/http"
+	"os"
+
+	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
-//TIP <p>To run your code, right-click the code and select <b>Run</b>.</p> <p>Alternatively, click
-// the <icon src="AllIcons.Actions.Execute"/> icon in the gutter and select the <b>Run</b> menu item from here.</p>
-func main() {
-	//TIP <p>Press <shortcut actionId="ShowIntentionActions"/> when your caret is at the underlined text
-	// to see how GoLand suggests fixing the warning.</p><p>Alternatively, if available, click the lightbulb to view possible fixes.</p>
-	s := "gopher"
-	fmt.Printf("Hello and welcome, %s!\n", s)
+func init() {
+	godotenv.Load()
+}
 
-	for i := 1; i <= 5; i++ {
-		//TIP <p>To start your debugging session, right-click your code in the editor and select the Debug option.</p> <p>We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-		// for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.</p>
-		fmt.Println("i =", 100/i)
+func main() {
+
+	client := http.Client{}
+
+	var hubspotClient hubspot.HubSpotClient
+
+	{
+		settings := hubspot.Settings{
+			Client: &client,
+			APIKey: os.Getenv("HUBSPOT_ACCESS_TOKEN"),
+		}
+
+		hubspotClient = hubspot.NewClient(settings)
+
 	}
+
+	var clickupClient clickup.ClickUpClient
+
+	{
+		clickUpSettings := clickup.Settings{
+			Client:        &client,
+			ClickupApiKey: os.Getenv("CLICKUP_ACCESS_TOKEN"),
+			HubSpotAPiKey: os.Getenv("HUBSPOT_ACCESS_TOKEN"),
+		}
+
+		clickupClient = clickup.NewClient(clickUpSettings)
+	}
+
+	var attachmentService attachments.AttachmentService
+
+	{
+		attachmentService = attachments.NewService(clickupClient, hubspotClient)
+	}
+
+	var ticketService tickets.TicketService
+
+	{
+		ticketService = tickets.NewService(hubspotClient, clickupClient)
+	}
+
+	var commentService comments.CommentService
+
+	{
+		commentService = comments.NewService(comments.Settings{
+			ClickupClient:     clickupClient,
+			HubspotClient:     hubspotClient,
+			AttachmentService: attachmentService,
+			ActorID:           os.Getenv("ACTOR_ID"),
+		})
+	}
+
+	var taskService tasks.TaskService
+
+	{
+		taskService = tasks.NewService(tasks.Settings{
+			ClickupClient:              clickupClient,
+			HubspotClient:              hubspotClient,
+			AttachmentService:          attachmentService,
+			HubSpotTicketCustomFieldID: os.Getenv("CLICKUP_CUSTOM_FIELD_ID_HUBSPOT_TICKET_ID"),
+			CustomerCustomFieldID:      os.Getenv("CLICKUP_CUSTOM_FIELD_ID_CUSTOMER"),
+			FallbackCustomerID:         os.Getenv("FALLBACK_CLICKUP_CUSTOMER_ID"),
+			HubSpotPortalID:            os.Getenv("HUBSPOT_PORTAL_ID"),
+			EmailContactID:             os.Getenv("CLICKUP_CUSTOM_FIELD_ID_EMAIL_CONTACT"),
+		})
+	}
+
+	var taskHandler = handlers.TaskHandler{Service: taskService}
+	var commentHandler = handlers.CommentHandler{Service: commentService}
+	var ticketHandler = handlers.TicketHandler{Service: ticketService}
+
+	//setup router
+	mux := mux.NewRouter()
+	webhook := mux.PathPrefix("/webhook").Subrouter()
+	hubspot := webhook.PathPrefix("/hubspot").Subrouter()
+
+	//All calls coming from hubspot are sorted under the subRouter hubspot
+	hubspot.HandleFunc("/create_task", handlers.CreateTask(taskHandler)).Methods(http.MethodPost)
+	hubspot.HandleFunc("/update_task", handlers.UpdateTask(taskHandler)).Methods(http.MethodPost)
+	hubspot.HandleFunc("/receive_email", handlers.ReceiveEmail(commentHandler)).Methods(http.MethodPost)
+
+	//All calls coming from clickup are sorted under the subRouter clickup
+	clickup := webhook.PathPrefix("/clickup").Subrouter()
+	clickup.HandleFunc("/send_email", handlers.SendEmail(commentHandler)).Methods(http.MethodPost)
+	clickup.HandleFunc("/update_ticket", handlers.UpdateTicket(ticketHandler)).Methods(http.MethodPost)
+
+	//run app
+	listeningPort := os.Getenv("LISTENING_PORT")
+	log.Printf("running on port :%s", listeningPort)
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }

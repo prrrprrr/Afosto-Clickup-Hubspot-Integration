@@ -1,0 +1,56 @@
+{
+    "uid": "Update_Clickup_task",
+    "type": "workflow-action",
+    "config": {
+      "actionUrl": "https://savoringly-stalked-julietta.ngrok-free.dev/webhook/hubspot/update_task",
+      "isPublished": false,
+      "supportedClients": [
+        {
+          "client": "WORKFLOWS"
+        }
+      ],
+      "inputFields": [
+        {
+          "typeDefinition": {
+            "name": "clickup_id",
+            "type": "string",
+            "fieldType": "text"
+          },
+          "supportedValueTypes": [
+            "STATIC_VALUE"
+          ],
+          "isRequired": true
+        },
+        {
+            "typeDefinition": {
+              "name": "ticket_status",
+              "type": "string",
+              "fieldType": "text"
+            },
+            "supportedValueTypes": [
+              "STATIC_VALUE"
+            ],
+            "isRequired": true
+          }
+      ],
+      "labels": {
+        "en": {
+          "actionName": "Update Clickup task",
+          "actionDescription": "Update a task",
+          "actionCardContent": "Update clickup status",
+          "inputFieldLabels": {
+            "clickup_id": "Clickup Task ID",
+            "ticket_status": "Ticket status"
+  
+          },
+          "inputFieldDescriptions": {
+            "clickup_id": "Enter the clickup task ID",
+            "ticket_status": "enter the ticket pipeline stage"
+          }
+        }
+      },
+      "objectTypes": [
+        "TICKET"
+      ]
+    }
+  }

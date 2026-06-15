@@ -1,0 +1,108 @@
+{
+    "uid": "Create_clickup_task",
+    "type": "workflow-action",
+    "config": {
+      "actionUrl": "https://savoringly-stalked-julietta.ngrok-free.dev/webhook/hubspot/create_task",
+      "isPublished": true,
+      "supportedClients": [
+        {
+          "client": "WORKFLOWS"
+        }
+      ],
+      "inputFields": [
+        {
+          "typeDefinition": {
+            "name": "ticket_id",
+            "type": "string",
+            "fieldType": "text"
+          },
+          "supportedValueTypes": [
+            "STATIC_VALUE"
+          ],
+          "isRequired": false
+        },
+        {
+          "typeDefinition": {
+            "name": "ticket_name",
+            "type": "string",
+            "fieldType": "text"
+          },
+          "supportedValueTypes": [
+            "STATIC_VALUE"
+          ],
+          "isRequired": false
+        },
+        {
+          "typeDefinition": {
+            "name": "clickup_customer",
+            "type": "string",
+            "fieldType": "text"
+          },
+          "supportedValueTypes": [
+            "STATIC_VALUE"
+          ],
+          "isRequired": false
+        },
+        {
+          "typeDefinition": {
+            "name": "ticket_description",
+            "type": "string",
+            "fieldType": "textarea"
+          },
+          "supportedValueTypes": [
+            "STATIC_VALUE"
+          ],
+          "isRequired": false
+        },
+        {
+            "typeDefinition": {
+              "name": "email_id",
+              "type": "string",
+              "fieldType": "text"
+            },
+            "supportedValueTypes": [
+              "STATIC_VALUE"
+            ],
+            "isRequired": false
+        },
+        {
+            "typeDefinition": {
+              "name": "email_from",
+              "type": "string",
+              "fieldType": "text"
+            },
+            "supportedValueTypes": [
+              "STATIC_VALUE"
+            ],
+            "isRequired": false
+        }
+      ],
+      "labels": {
+        "en": {
+          "actionName": "Create clickup task",
+          "actionDescription": "Creates a ClickUp task and immediatly fills in Hubspot information",
+          "actionCardContent": "Create ClickUp task with ticket data",
+          "inputFieldLabels": {
+            "ticket_id": "Ticket ID",
+            "ticket_name": "Ticket name",
+            "clickup_customer": "ClickUp customer",
+            "ticket_description": "Ticket description",
+            "email_id": "email record id",
+            "email_from": "from email adress"
+  
+          },
+          "inputFieldDescriptions": {
+            "ticket_id": "Enter the ticket ID",
+            "ticket_name": "Enter the name of the ticket",
+            "clickup_customer": "Enter the associated company",
+            "ticket_description": "Enter the ticket description",
+            "email_id": "Most recently created email record id",
+            "email_from": "email from"
+        }
+        }
+      },
+      "objectTypes": [
+        "TICKET"
+      ]
+    }
+  }

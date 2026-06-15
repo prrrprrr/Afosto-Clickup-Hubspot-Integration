@@ -5,10 +5,10 @@ attachmentsService.go contains the interface for the attachmentService and all f
 */
 
 import (
+	"Afosto-Clickup-Hubspot-Integration/internal/clickup"
+	"Afosto-Clickup-Hubspot-Integration/internal/hubspot"
 	"context"
 	"fmt"
-	"Afosto-Clickup-Hubspot-Integration/Internal/clickup"
-	"Afosto-Clickup-Hubspot-Integration/Internal/hubspot"
 	"net/url"
 	"path"
 	"strconv"
@@ -43,7 +43,7 @@ func NewService(
 }
 
 /*
-This function checks the incoming mail for any images in the htmlStr. It has a helper function named dfsSources
+findInlineImages checks the incoming mail for any images in the htmlStr. It has a helper function named dfsSources
 If there are images, the sources of these images are linked to the OriginalSource's and returned as an InlineImage slice.
 */
 func (s *attachmentService) findInlineImages(ctx context.Context, htmlStr string) ([]InlineImage, error) {

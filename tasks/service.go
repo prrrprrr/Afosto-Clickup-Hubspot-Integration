@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"Afosto-Clickup-Hubspot-Integration/attachments"
-	"Afosto-Clickup-Hubspot-Integration/Internal/clickup"
-	"Afosto-Clickup-Hubspot-Integration/Internal/hubspot"
+	"Afosto-Clickup-Hubspot-Integration/internal/clickup"
+	"Afosto-Clickup-Hubspot-Integration/internal/hubspot"
 	"log"
 )
 

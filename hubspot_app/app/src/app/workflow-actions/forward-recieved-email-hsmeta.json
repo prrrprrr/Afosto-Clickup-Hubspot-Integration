@@ -1,0 +1,79 @@
+{
+    "uid": "forward_comment_to_clickup",
+    "type": "workflow-action",
+    "config": {
+      "actionUrl": "https://savoringly-stalked-julietta.ngrok-free.dev/webhook/hubspot/receive_email",
+      "isPublished": true,
+      "supportedClients": [
+        {
+          "client": "WORKFLOWS"
+        }
+      ],
+      "inputFields": [
+        {
+            "typeDefinition": {
+              "name": "clickup_task_id",
+              "type": "string",
+              "fieldType": "text"
+            },
+            "supportedValueTypes": [
+              "STATIC_VALUE"
+            ],
+            "isRequired": true
+        },
+        {
+            "typeDefinition": {
+              "name": "email_id",
+              "type": "string",
+              "fieldType": "text"
+            },
+            "supportedValueTypes": [
+              "STATIC_VALUE"
+            ],
+            "isRequired": true
+          },
+          {
+            "typeDefinition": {
+              "name": "ticket_status",
+              "type": "string",
+              "fieldType": "text"
+            },
+            "supportedValueTypes": [
+              "STATIC_VALUE"
+            ],
+            "isRequired": false
+          },
+          {
+            "typeDefinition": {
+              "name": "ticket_id",
+              "type": "string",
+              "fieldType": "text"
+            },
+            "supportedValueTypes": [
+              "STATIC_VALUE"
+            ],
+            "isRequired": false
+          }
+      ],
+      "labels": {
+        "en": {
+          "actionName": "Leave comment on CLickUp task",
+          "actionDescription": "Leave a comment on a ClickUp task",
+          "actionCardContent": "Leave a comment on a ClickUp task",
+          "inputFieldLabels": {
+            "clickup_task_id": "clickup task-id",
+            "email_id": "record_id of the email",
+            "ticket_status": "pipeline status of ticket",
+            "ticket_id": "ticket id"
+          },
+          "inputFieldDescriptions": {
+            "clickup_task_id": "ID of this ticket's associated clickup task",
+            "email_id": "record_id of most recently created email",
+            "ticket_status": "pipeline status of ticket",
+            "ticket_id": "ticket id"
+          }
+        }
+      },
+      "objectTypes": ["TICKET"]
+    }
+  }

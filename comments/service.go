@@ -1,11 +1,14 @@
 package comments
 
+/*
+This file contains the logic for processing e-mails from, and to the customer.
+*/
 import (
+	"Afosto-Clickup-Hubspot-Integration/attachments"
+	"Afosto-Clickup-Hubspot-Integration/internal/clickup"
+	"Afosto-Clickup-Hubspot-Integration/internal/hubspot"
 	"context"
 	"fmt"
-	"Afosto-Clickup-Hubspot-Integration/attachments"
-	"Afosto-Clickup-Hubspot-Integration/Internal/clickup"
-	"Afosto-Clickup-Hubspot-Integration/Internal/hubspot"
 	"log"
 	"regexp"
 	"strings"
@@ -41,7 +44,8 @@ func NewService(
 }
 
 /*
-ProcessEmailToCustomer pushes a comment as an email to the customer
+ProcessEmailToCustomer handles newComment event in clickup
+gets the newest comment, checks if it needs to be sent out, and does so if required
 */
 func (s commentService) ProcessEmailToCustomer(ctx context.Context, payload SendEmailToCustomer) error {
 
@@ -85,7 +89,7 @@ func (s commentService) ProcessEmailToCustomer(ctx context.Context, payload Send
 	}
 	actorID, ok := EmailToActorId[parsedComment.User]
 	if !ok {
-		//take ton as fallback
+		//if no correct id was found we have this fallback
 		actorID = "23951706"
 	}
 
