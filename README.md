@@ -29,7 +29,7 @@ Integrates ClickUp tasks with HubSpot using a Go backend and a HubSpot UI extens
 
 3. **Build and run the Go service**
    ```bash
-   go build
+   go run main.go
    ```
 
 4. **Deploy the HubSpot app**
